@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · CloudPulse</title>
+  <link rel="stylesheet" href="auth-pages.css" />
+</head>
+<body>
+  <script src="dot-field-bg.js"></script>
+
+  <div class="admin-layout">
+    <h1>Administration</h1>
+    <p class="lead">
+      Manage user accounts (username, email, role, password) and dashboard copy. Administrators land here after sign-in so you
+      can work on accounts before opening the live monitoring dashboard.
+    </p>
+
+    <div id="adminMsg" class="admin-msg" role="status"></div>
+
+    <div class="admin-toolbar">
+      <a href="change-password.html">Change my password</a>
+      <a href="index.html">Open monitoring dashboard</a>
+      <button type="button" id="btnLogout">Sign out</button>
+    </div>
+
+    <div class="admin-grid">
+      <section class="card">
+        <h2 style="margin:0 0 12px;font-size:1rem;color:#bdd2f5;">Users</h2>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="userTable">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="userTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 style="margin:0 0 12px;font-size:1rem;color:#bdd2f5;">Edit user</h2>
+        <p class="subtitle" style="margin:0 0 14px;">Select a user from the table or fill the form to update profile, role, or password.</p>
+        <form id="editUserForm" class="admin-form-grid">
+          <input type="hidden" id="editUserId" />
+          <label>
+            Username
+            <input type="text" id="editUsername" required />
+          </label>
+          <label>
+            Email
+            <input type="email" id="editEmail" required />
+          </label>
+          <label>
+            Role
+            <select id="editRole">
+              <option value="user">user</option>
+              <option value="admin">admin</option>
+            </select>
+          </label>
+          <label>
+            New password (optional)
+            <input type="password" id="editPassword" autocomplete="new-password" placeholder="Leave blank to keep current" />
+          </label>
+          <div class="admin-toolbar" style="margin:0;">
+            <button type="submit">Save user</button>
+            <button type="button" class="danger" id="btnDeleteUser" hidden>Delete user</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card" style="grid-column: 1 / -1;">
+        <h2 style="margin:0 0 12px;font-size:1rem;color:#bdd2f5;">Dashboard structure &amp; copy</h2>
+        <p class="subtitle" style="margin:0 0 14px;">
+          These values map to the hero area and tab labels on the main dashboard. Saving updates all users on this device.
+        </p>
+        <form id="siteConfigForm" class="admin-form-grid">
+          <label>
+            Eyebrow line
+            <input type="text" id="cfgEyebrow" />
+          </label>
+          <label>
+            Badge 1
+            <input type="text" id="cfgBadge1" />
+          </label>
+          <label>
+            Badge 2
+            <input type="text" id="cfgBadge2" />
+          </label>
+          <label>
+            Badge 3
+            <input type="text" id="cfgBadge3" />
+          </label>
+          <label>
+            Hero title (after “CloudPulse”)
+            <input type="text" id="cfgHeroRest" />
+          </label>
+          <label>
+            Hero subtitle paragraph
+            <textarea id="cfgHeroSub"></textarea>
+          </label>
+          <label>
+            Tab: Overview
+            <input type="text" id="cfgTab1" />
+          </label>
+          <label>
+            Tab: Performance
+            <input type="text" id="cfgTab2" />
+          </label>
+          <label>
+            Tab: Reliability
+            <input type="text" id="cfgTab3" />
+          </label>
+          <label>
+            Tab: FinOps
+            <input type="text" id="cfgTab4" />
+          </label>
+          <label>
+            Tab: History
+            <input type="text" id="cfgTab5" />
+          </label>
+          <div class="admin-toolbar" style="margin:0;">
+            <button type="submit">Save dashboard copy</button>
+            <button type="button" id="btnResetSite">Reset to defaults</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <script src="site-config.js"></script>
+  <script type="module" src="admin-page.js"></script>
+</body>
+</html>

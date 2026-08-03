@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register · CloudPulse</title>
+  <link rel="stylesheet" href="auth-pages.css" />
+</head>
+<body class="auth-body">
+  <script src="dot-field-bg.js"></script>
+  <div class="auth-shell">
+    <section class="card auth-card">
+      <h1>Create your account</h1>
+      <p class="subtitle">
+        Register to access the CloudPulse monitoring dashboard. You will use your username and password to sign in.
+      </p>
+      <div id="authError" class="auth-error" role="alert"></div>
+      <div id="authSuccess" class="auth-success" role="status"></div>
+      <form id="registerForm" class="auth-form" novalidate>
+        <label>
+          <span>Username</span>
+          <input id="username" name="username" type="text" autocomplete="username" minlength="3" required />
+        </label>
+        <label>
+          <span>Email</span>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </label>
+        <label>
+          <span>Password</span>
+          <input id="password" name="password" type="password" autocomplete="new-password" minlength="6" required />
+        </label>
+        <label class="show-password-row">
+          <input type="checkbox" id="showPassword" data-target="password" />
+          <span>Show password</span>
+        </label>
+        <label>
+          <span>Confirm password</span>
+          <input id="password2" name="password2" type="password" autocomplete="new-password" minlength="6" required />
+        </label>
+        <label class="show-password-row">
+          <input type="checkbox" id="showPassword2" data-target="password2" />
+          <span>Show password</span>
+        </label>
+        <div class="auth-actions">
+          <button type="submit">Register</button>
+        </div>
+      </form>
+      <p class="auth-footer">Already have an account? <a href="login.html">Sign in</a></p>
+    </section>
+  </div>
+  <script src="password-toggle.js"></script>
+  <script type="module" src="register-page.js"></script>
+</body>
+</html>

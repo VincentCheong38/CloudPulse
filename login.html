@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in · CloudPulse</title>
+  <link rel="stylesheet" href="auth-pages.css" />
+</head>
+<body class="auth-body">
+  <script src="dot-field-bg.js"></script>
+  <div class="auth-shell">
+    <section class="card auth-card">
+      <h1>Welcome back</h1>
+      <p class="subtitle">Sign in to open the CloudPulse monitoring dashboard. New users should register first.</p>
+      <div id="authError" class="auth-error" role="alert"></div>
+      <div id="authOk" class="auth-success" role="status"></div>
+      <form id="loginForm" class="auth-form" novalidate>
+        <label>
+          <span>Username</span>
+          <input id="loginUsername" name="username" type="text" autocomplete="username" required />
+        </label>
+        <label>
+          <span>Password</span>
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+        </label>
+        <label class="show-password-row">
+          <input type="checkbox" id="showPassword" data-target="password" />
+          <span>Show password</span>
+        </label>
+        <div class="auth-actions">
+          <button type="submit">Sign in</button>
+        </div>
+      </form>
+      <p class="auth-footer">Need an account? <a href="register.html">Register</a></p>
+    </section>
+  </div>
+  <script src="password-toggle.js"></script>
+  <script type="module" src="login-page.js"></script>
+</body>
+</html>

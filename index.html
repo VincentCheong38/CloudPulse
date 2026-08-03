@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CloudPulse Monitoring Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <script src="dot-field-bg.js"></script>
+  <script src="site-config.js"></script>
+  <main class="page">
+    <header class="user-bar card">
+      <div class="user-bar-left">
+        <span class="user-bar-label">Signed in as</span>
+        <strong id="userBarName"></strong>
+        <span id="userBarRole" class="user-bar-role"></span>
+      </div>
+      <div class="user-bar-actions">
+        <a class="user-bar-link" href="change-password.html">Password</a>
+        <a id="adminLink" class="user-bar-link" href="admin.html" hidden>Admin</a>
+        <button type="button" id="logoutBtn" class="user-bar-logout">Sign out</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-top">
+        <p class="eyebrow">Cloud Operations Command Center</p>
+        <div class="hero-badges">
+          <span>Live Telemetry</span>
+          <span>Auto Alerting</span>
+          <span>Forecasting</span>
+        </div>
+      </div>
+      <h1><span class="brand">CloudPulse</span><span id="heroTitleRest">: Centralized Cloud Performance Monitoring</span></h1>
+      <p id="siteHeroSubtitle">
+        Live monitoring for CPU, memory, storage, and network usage across multiple cloud instances with automated alerts and
+        exportable performance reports.
+      </p>
+    </section>
+
+    <section class="controls">
+      <label for="instanceFilter">Instance</label>
+      <select id="instanceFilter" aria-label="Select cloud instance"></select>
+      <label for="timeRange">Range</label>
+      <select id="timeRange" aria-label="Select time range">
+        <option value="30">Last 30 secs</option>
+        <option value="60">Last 60 secs</option>
+        <option value="120">Last 120 secs</option>
+      </select>
+      <button id="toggleStream" type="button">Pause Stream</button>
+      <button id="downloadReport" type="button">Download Report</button>
+      <span id="lastUpdated">Last update: -</span>
+    </section>
+
+    <section class="tab-nav" aria-label="Dashboard tabs">
+      <button class="tab-btn active" data-tab-target="overview" type="button">Overview</button>
+      <button class="tab-btn" data-tab-target="performance" type="button">Performance</button>
+      <button class="tab-btn" data-tab-target="reliability" type="button">Reliability</button>
+      <button class="tab-btn" data-tab-target="finops" type="button">FinOps</button>
+      <button class="tab-btn" data-tab-target="history" type="button">History</button>
+    </section>
+
+    <div class="tab-panel active" data-tab-panel="overview">
+      <section class="card narrative-card">
+        <h2>Overview Summary</h2>
+        <p>
+          The Overview section provides an executive-level pulse of platform health by combining infrastructure utilization and
+          service activity into one continuous operational snapshot. Teams can use this area to rapidly understand whether current
+          resource consumption is aligned with incoming workload demand, and whether any sudden shifts in behavior indicate a
+          developing instability risk. CPU, memory, storage, and network values are presented alongside request dynamics and
+          latency indicators so that capacity pressure and application responsiveness can be evaluated together rather than in
+          isolation. This reduces the time needed to detect unusual patterns, prioritize investigations, and trigger mitigation
+          actions before service quality degrades for users.
+        </p>
+      </section>
+
+      <section class="summary-grid">
+        <article class="card"><h2>CPU Usage</h2><p class="value" id="cpuValue">0%</p><canvas id="cpuUsageMiniChart" width="260" height="90"></canvas></article>
+        <article class="card"><h2>Memory Usage</h2><p class="value" id="memoryValue">0%</p><canvas id="memoryUsageMiniChart" width="260" height="90"></canvas></article>
+        <article class="card"><h2>Storage Usage</h2><p class="value" id="storageValue">0%</p><canvas id="storageUsageMiniChart" width="260" height="90"></canvas></article>
+        <article class="card"><h2>Network Traffic</h2><p class="value" id="networkValue">0 Mbps</p><canvas id="networkUsageMiniChart" width="260" height="90"></canvas></article>
+      </section>
+
+      <section class="extended-grid">
+        <article class="card"><h2>Request Rate</h2><p class="value" id="requestRateValue">0 req/s</p><canvas id="requestRateMiniChart" width="260" height="90"></canvas></article>
+        <article class="card"><h2>Error Rate</h2><p class="value" id="errorRateValue">0%</p><canvas id="errorRateMiniChart" width="260" height="90"></canvas></article>
+        <article class="card"><h2>P95 Latency</h2><p class="value" id="latencyValue">0 ms</p><canvas id="latencyMiniChart" width="260" height="90"></canvas></article>
+        <article class="card"><h2>Disk IOPS</h2><p class="value" id="iopsValue">0</p><canvas id="iopsMiniChart" width="260" height="90"></canvas></article>
+      </section>
+    </div>
+
+    <div class="tab-panel" data-tab-panel="performance">
+      <section class="card narrative-card">
+        <h2>Performance Summary</h2>
+        <p>
+          The Performance section focuses on workload flow efficiency and response stability under changing traffic conditions.
+          Queue depth, throughput, packet loss, and active session trends reveal whether the platform is scaling smoothly or
+          approaching bottleneck thresholds that can impact downstream services. By reviewing these metrics together, operators
+          can distinguish short-lived spikes from sustained congestion patterns, identify network quality deterioration earlier,
+          and confirm whether throughput improvements are translating into better real-user outcomes. This view supports proactive
+          tuning of scaling rules, traffic distribution policies, and service limits, enabling the system to maintain predictable
+          responsiveness during both normal operation and peak-demand periods.
+        </p>
+      </section>
+
+      <section class="summary-grid">
+        <article class="card"><h2>Queue Depth</h2><p class="value" id="queueDepthValue">0</p><canvas id="queueDepthMiniChart" width="260" height="90"></canvas></article>
+        <article class="card"><h2>Throughput</h2><p class="value" id="throughputValue">0 MB/s</p><canvas id="throughputMiniChart" width="260" height="90"></canvas></article>
+        <article class="card"><h2>Packet Loss</h2><p class="value" id="packetLossValue">0%</p><canvas id="packetLossMiniChart" width="260" height="90"></canvas></article>
+        <article class="card"><h2>Active Sessions</h2><p class="value" id="sessionValue">0</p><canvas id="sessionsMiniChart" width="260" height="90"></canvas></article>
+      </section>
+    </div>
+
+    <div class="tab-panel" data-tab-panel="reliability">
+      <section class="advanced-grid">
+        <article class="card">
+          <h2>SLO and Error Budget</h2>
+          <div class="mini-stats">
+            <p>Service Uptime (30d): <strong id="uptimeValue">99.95%</strong></p>
+            <p>Error Budget Remaining: <strong id="budgetValue">72%</strong></p>
+            <p>Estimated Monthly Cost: <strong id="costValue">$0</strong></p>
+            <p>Optimization Hint: <strong id="optimizationHint">-</strong></p>
+          </div>
+        </article>
+        <article class="card"><h2>Forecast (Next 5 Intervals)</h2><ul id="forecastList"></ul></article>
+        <article class="card">
+          <h2>Alert Rule Tuning</h2>
+          <div class="rule-grid">
+            <label>CPU Threshold <input id="cpuThreshold" type="range" min="50" max="99" value="85" /></label>
+            <label>Memory Threshold <input id="memoryThreshold" type="range" min="50" max="99" value="90" /></label>
+            <label>Storage Threshold <input id="storageThreshold" type="range" min="60" max="99" value="92" /></label>
+            <label>Network Threshold <input id="networkThreshold" type="range" min="120" max="320" value="280" /></label>
+          </div>
+        </article>
+      </section>
+
+      <section class="summary-grid">
+        <article class="card"><h2>Service Uptime</h2><p class="value" id="uptimeCardValue">99.95%</p><canvas id="uptimeMiniChart" width="260" height="90"></canvas></article>
+        <article class="card"><h2>Error Budget</h2><p class="value" id="budgetCardValue">72%</p><canvas id="budgetMiniChart" width="260" height="90"></canvas></article>
+        <article class="card"><h2>Estimated Cost</h2><p class="value" id="estimatedCostCardValue">$0</p><canvas id="estimatedCostMiniChart" width="260" height="90"></canvas></article>
+      </section>
+
+      <section class="status-alerts">
+        <article class="card">
+          <h2>Instance Status Overview</h2>
+          <table>
+            <thead><tr><th>Instance</th><th>Status</th><th>CPU</th><th>Memory</th><th>Storage</th><th>Network</th></tr></thead>
+            <tbody id="instanceTableBody"></tbody>
+          </table>
+        </article>
+        <article class="card"><h2>Automated Alerts</h2><ul id="alertList"></ul></article>
+      </section>
+
+      <section class="card"><h2>Incident Timeline</h2><ul id="incidentTimeline"></ul></section>
+
+    </div>
+
+    <div class="tab-panel" data-tab-panel="finops">
+      <section class="summary-grid">
+        <article class="card"><h2>Monthly Cloud Spend</h2><p class="value" id="monthlySpendValue">$0</p><canvas id="monthlySpendMiniChart" width="260" height="90"></canvas></article>
+        <article class="card"><h2>Idle Resource Cost</h2><p class="value" id="idleCostValue">$0</p><canvas id="idleCostMiniChart" width="260" height="90"></canvas></article>
+        <article class="card"><h2>Efficiency Score</h2><p class="value" id="efficiencyScoreValue">0/100</p><canvas id="efficiencyScoreMiniChart" width="260" height="90"></canvas></article>
+        <article class="card"><h2>Potential Savings</h2><p class="value" id="savingsValue">$0</p><canvas id="savingsMiniChart" width="260" height="90"></canvas></article>
+      </section>
+      <section class="card">
+        <h2>Cost Optimization Notes</h2>
+        <ul id="finopsNotes">
+          <li>Scale down non-production instances during off-peak windows.</li>
+          <li>Use autoscaling policies tied to request rate and latency SLO.</li>
+          <li>Move cold storage data to lower-cost archival tier.</li>
+          <li>Commit baseline capacity with savings plans for predictable workloads.</li>
+        </ul>
+      </section>
+
+    </div>
+
+    <div class="tab-panel" data-tab-panel="history">
+      <section class="history-controls card">
+        <label for="historyReportSelect">Report</label>
+        <select id="historyReportSelect" aria-label="Select history report period">
+          <option value="daily">Daily Report</option>
+          <option value="weekly">Weekly Report</option>
+          <option value="monthly">Monthly Report</option>
+        </select>
+        <span id="historyPeriodBadge" class="history-period-badge"></span>
+      </section>
+      <div id="historyReportContainer" aria-live="polite"></div>
+    </div>
+  </main>
+
+  <script src="history-reports.js" defer></script>
+  <script type="module" src="index-boot.js"></script>
+</body>
+</html>
